@@ -305,7 +305,7 @@ int test(Executor &exec)
     auto fa = async(exec, [](int a, double b, const char *c)
     {
         std::cout << "Inside async " << c << std::endl;
-        return 2.1415f;
+        return float(a*b) + 2.1415f;
     }, 1, 2.2, "Hello");
     fa.get();
     std::cout << std::endl;
@@ -316,7 +316,7 @@ int test(Executor &exec)
     future<int> f = make_ready_future(5);
     //
     future<std::string> ft = f.then(exec,
-        [](future<int> && f)
+        [](future<int> && /*f*/)
         {
             std::cout << "Inside .then()" << std::endl;
             return std::string("then");
@@ -330,7 +330,7 @@ int test(Executor &exec)
     auto fs = make_ready_future(5).share();
     //
     future<std::string> fts = fs.then(exec,
-        [](shared_future<int> && f)
+        [](shared_future<int> && /*f*/)
         {
             std::cout << "Inside .then(shared)" << std::endl;
             return std::string("then(shared)");
